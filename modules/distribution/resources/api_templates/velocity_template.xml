@@ -232,11 +232,14 @@ $out_sequences.get("$resource.getUriTemplate()").get($uri)
         #if($handlers.size() > 0)
 <handlers xmlns="http://ws.apache.org/ns/synapse">
 #foreach($handler in $handlers)
+
 <handler xmlns="http://ws.apache.org/ns/synapse" class="$handler.className">
+    #if(!(($apiName == 'admin--payment' || $apiName == 'admin--smsmessaging' || $apiName == 'admin--location' || $apiName == 'admin--ussd') && $handler.className == 'org.wso2.carbon.apimgt.gateway.handlers.throttling.APIThrottleHandler'))
     #if($handler.hasProperties())
     #set ($map = $handler.getProperties() )
     #foreach($property in $map.entrySet())
     <property name="$!property.key" value="$!property.value"/>
+    #end
     #end
     #end
 </handler>
